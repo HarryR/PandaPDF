@@ -12,28 +12,28 @@ CONFIGURE_ENV=PKG_CONFIG_LIBDIR=$(DEP_ROOT)/lib/pkgconfig \
 			  LDFLAGS="-L$(DEP_ROOT)/lib" \
 			  INCLUDE_PATH=$(DEP_ROOT)/include \
 			  LIBRARY_PATH=$(DEP_ROOT)/lib \
-			  BINARY_PATH=$(DEP_ROOT)/bin	
+			  BINARY_PATH=$(DEP_ROOT)/bin
 
 # ------------------------------------------------------------------------------			 
 
-JBIG_VER=2.0
+JBIG_VER=2.1
 JBIG_TAR=jbigkit-$(JBIG_VER).tar.gz
-JBIG_DIR=$(DEP_BUILD)/jbigkit
-JBIG_URL=http://www.cl.cam.ac.uk/~mgk25/download/jbigkit-$(JBIG_VER).tar.gz
+JBIG_DIR=$(DEP_BUILD)/jbigkit-$(JBIG_VER)
+JBIG_URL=http://www.cl.cam.ac.uk/~mgk25/jbigkit/download/jbigkit-$(JBIG_VER).tar.gz
 JBIG_LIB=$(DEP_ROOT)/lib/libjbig.a
 
 # ------------------------------------------------------------------------------
 
-WEBP_VER=0.2.1
+WEBP_VER=0.4.4
 WEBP_TAR=libwebp-$(WEBP_VER).tar.gz
 WEBP_DIR=$(DEP_BUILD)/libwebp-$(WEBP_VER)
-WEBP_URL=http://webp.googlecode.com/files/$(WEBP_TAR)
+WEBP_URL=http://downloads.webmproject.org/releases/webp/$(WEBP_TAR)
 WEBP_LIB=$(DEP_ROOT)/lib/libwebp.a
 WEBP_CONFIGURE=--disable-shared --prefix=$(DEP_ROOT) --disable-dependency-tracking
 
 # ------------------------------------------------------------------------------
 
-CAIRO_VERSION=1.12.8
+CAIRO_VERSION=1.12.18
 CAIRO_TAR=cairo-$(CAIRO_VERSION).tar.xz
 CAIRO_URL=http://www.cairographics.org/releases/$(CAIRO_TAR)
 CAIRO_DIR=$(DEP_BUILD)/cairo-$(CAIRO_VERSION)
@@ -50,7 +50,7 @@ CAIRO_CONFIGURE=--enable-xlib=no --enable-xlib-xrender=no \
 
 # ------------------------------------------------------------------------------
 
-ZLIB_VERSION=1.2.7
+ZLIB_VERSION=1.2.8
 ZLIB_TAR=zlib-$(ZLIB_VERSION).tar.gz
 ZLIB_URL=http://zlib.net/$(ZLIB_TAR)
 ZLIB_DIR=$(DEP_BUILD)/zlib-$(ZLIB_VERSION)
@@ -63,19 +63,23 @@ ZLIB_MAKEFLAGS=
 EXPAT_VERSION=2.1.0
 EXPAT_TAR=expat-$(EXPAT_VERSION).tar.gz
 EXPAT_DIR=$(DEP_BUILD)/expat-$(EXPAT_VERSION)
-EXPAT_URL=http://switch.dl.sourceforge.net/project/expat/expat/$(EXPAT_VERSION)/$(EXPAT_TAR)
+EXPAT_URL=http://sourceforge.net/projects/expat/files/expat/$(EXPAT_VERSION)/$(EXPAT_TAR)/download
+EXPAT_URL=http://sourceforge.net/projects/expat/files/expat/$(EXPAT_VERSION)/expat-$(EXPAT_VERSION).tar.gz/download
 EXPAT_LIB=$(DEP_ROOT)/lib/libexpat.a
 EXPAT_CONFIGURE=--disable-dependency-tracking --disable-shared --prefix=$(DEP_ROOT)
 EXPAT_MAKEFLAGS=
 
 # ------------------------------------------------------------------------------
 
-OJPG_VER=1.5.1
+OJPG_VER=2.1
 OJPG_TAR=openjpeg-$(OJPG_VER).tar.gz
-OJPG_URL=http://openjpeg.googlecode.com/files/$(OJPG_TAR)
-OJPG_LIB=$(DEP_ROOT)/lib/libopenjpeg.a
+OJPG_DIR=$(DEP_BUILD)/openjpeg-version.$(OJPG_VER)
+OJPG_URL=https://github.com/uclouvain/openjpeg/archive/version.$(OJPG_VER).tar.gz
+OJPG_LIB=$(DEP_ROOT)/lib/libopenjp2.*
+OJPG_INC=$(DEP_ROOT)/include/openjpeg-$(OJPG_VER)
 OJPG_CONFIGURE=--prefix=$(DEP_ROOT) --disable-dependency-tracking --disable-shared --disable-doc --disable-png --disable-tiff --disable-lcms2
 OJPG_MAKEFLAGS=
+CONFIGURE_ENV += LIBOPENJPEG_CFLAGS=-I$(DEP_ROOT)/include/openjpeg-$(OJPG_VER)
 
 # ------------------------------------------------------------------------------
 
@@ -88,7 +92,7 @@ FT_MAKEFLAGS=
 
 # ------------------------------------------------------------------------------
 
-FC_VERSION=2.10.91
+FC_VERSION=2.11.94
 FC_TAR=fontconfig-$(FC_VERSION).tar.gz
 FC_URL=http://www.freedesktop.org/software/fontconfig/release/$(FC_TAR)
 FC_DIR=$(DEP_BUILD)/fontconfig-$(FC_VERSION)
@@ -98,7 +102,7 @@ FC_MAKEFLAGS=
 
 # ------------------------------------------------------------------------------
 
-PIXMAN_VERSION=0.28.2
+PIXMAN_VERSION=0.32.8
 PIXMAN_TAR=pixman-$(PIXMAN_VERSION).tar.gz
 PIXMAN_URL=http://cairographics.org/releases/$(PIXMAN_TAR)
 PIXMAN_DIR=$(DEP_BUILD)/pixman-$(PIXMAN_VERSION)
@@ -111,7 +115,7 @@ PIXMAN_MAKEFLAGS=
 
 LCMS_VER=1.19
 LCMS_TAR=lcms-$(LCMS_VER).tar.gz
-LCMS_URL=http://switch.dl.sourceforge.net/project/lcms/lcms/1.19/$(LCMS_TAR)
+LCMS_URL=http://sourceforge.net/projects/lcms/files/lcms/$(LCMS_VER)/$(LCMS_TAR)/download
 LCMS_DIR=$(DEP_BUILD)/lcms-$(LCMS_VER)
 LCMS_LIB=$(DEP_ROOT)/lib/liblcms.a
 LCMS_CONFIGURE=--disable-dependency-tracking --disable-shared --prefix=$(DEP_ROOT)
@@ -119,9 +123,9 @@ LCMS_MAKEFLAGS=
 
 # ------------------------------------------------------------------------------
 
-PNG_VER=1.2.50
-PNG_TAR=libpng-$(PNG_VER).tar.bz2
-PNG_URL=http://switch.dl.sourceforge.net/project/libpng/libpng12/$(PNG_VER)/$(PNG_TAR)
+PNG_VER=1.2.54
+PNG_TAR=libpng-$(PNG_VER).tar.gz
+PNG_URL=http://sourceforge.net/projects/libpng/files/libpng12/$(PNG_VER)/libpng-$(PNG_VER).tar.gz/download
 PNG_DIR=$(DEP_BUILD)/libpng-$(PNG_VER)
 PNG_LIB=$(DEP_ROOT)/lib/libpng12.a
 PNG_CONFIGURE=--disable-dependency-tracking --disable-shared --prefix=$(DEP_ROOT)
@@ -139,7 +143,7 @@ JPEG_MAKEFLAGS=
 
 # ------------------------------------------------------------------------------
 
-TIFF_VER=4.0.3
+TIFF_VER=4.0.6
 TIFF_TAR=tiff-$(TIFF_VER).tar.gz
 TIFF_URL=http://download.osgeo.org/libtiff/$(TIFF_TAR)
 TIFF_DIR=$(DEP_BUILD)/tiff-$(TIFF_VER)
@@ -149,20 +153,21 @@ TIFF_MAKEFLAGS=
 
 # ------------------------------------------------------------------------------
 
-POPPLER_VERSION=0.22.0
-POPPLER_TAR=poppler-$(POPPLER_VERSION).tar.gz
+POPPLER_VERSION=0.38.0
+POPPLER_TAR=poppler-$(POPPLER_VERSION).tar.xz
 POPPLER_URL=http://poppler.freedesktop.org/$(POPPLER_TAR)
 POPPLER_DIR=$(DEP_BUILD)/poppler-$(POPPLER_VERSION)
 POPPLER_VERSION_MINOR=`cat $(POPPLER_BUILD_DIR)/config.h | grep PACKAGE_VERSION | cut -f 3 -d ' ' | sed -e 's/"//g' | cut -f 2 -d '.'`
 POPPLER_LIB_DIR=$(POPPLER_DIR)/poppler/.libs
 POPPLER_LIB=$(POPPLER_LIB_DIR)/libpoppler.a
-POPPLER_LIBS=$(POPPLER_DIR)/poppler/CairoOutputDev.o \
-			 $(POPPLER_DIR)/poppler/CairoFontEngine.o \
-			 $(POPPLER_DIR)/poppler/CairoRescaleBox.o \
+POPPLER_LIBS=$(POPPLER_DIR)/poppler/libpoppler_cairo_la-CairoOutputDev.o \
+			 $(POPPLER_DIR)/poppler/libpoppler_cairo_la-CairoFontEngine.o \
+			 $(POPPLER_DIR)/poppler/libpoppler_cairo_la-CairoRescaleBox.o \
 			 $(POPPLER_LIB)
 POPPLER_CONFIGURE=--enable-zlib --disable-poppler-glib  \
 				  --disable-gtk-test --disable-poppler-qt4 \
 				  --disable-poppler-cpp --disable-dependency-tracking \
+				  --enable-libopenjpeg=openjpeg2 \
 				  --disable-shared --prefix=$(DEP_ROOT)
 POPPLER_MAKEFLAGS=
 
@@ -181,6 +186,8 @@ FT_CONFIGURE += --host=$(CROSS_HOST)
 CAIRO_CONFIGURE += --host=$(CROSS_HOST)
 EXPAT_CONFIGURE += --host=$(CROSS_HOST)
 WEBP_CONFIGURE += --host=$(CROSS_HOST)
+
+# XXX: how to cross compile with cmake?
 OJPG_CONFIGURE += --host=$(CROSS_HOST)
 
 # Make flags for cross compilation
@@ -194,6 +201,10 @@ ifndef WINBUILD
 # FontConfig is only required on Linux
 DEPENDENCIES += $(FC_LIB)
 endif
+
+show_deps:
+	echo $(DEPENDENCIES)
+.PHONY: show_deps
 
 dependencies: $(DEPENDENCIES)
 
@@ -209,7 +220,7 @@ clean-dependencies:
 
 # ------------------------------------------------------------------------------
 
-$(POPPLER_LIB): $(POPPLER_DIR) $(DEP_ROOT) $(FC_LIB) $(TIFF_LIB) $(PNG_LIB) $(JPEG_LIB) $(LCMS_LIB)
+$(POPPLER_LIB): $(POPPLER_DIR) $(DEP_ROOT) $(FC_LIB) $(TIFF_LIB) $(PNG_LIB) $(JPEG_LIB) $(LCMS_LIB) $(OJPG_LIB)
 	cd $(POPPLER_DIR) && \
 		env $(CONFIGURE_ENV) sh -c './configure $(POPPLER_CONFIGURE)'
 	make $(MAKEFLAGS) -C $(POPPLER_DIR) install
@@ -220,7 +231,9 @@ $(POPPLER_DIR): $(DEP_BUILD)/$(POPPLER_TAR)
 	fi
 
 $(DEP_BUILD)/$(POPPLER_TAR): $(DEP_BUILD)
-	wget -cq -O $@ $(POPPLER_URL)
+	if [ ! -f $(DEP_BUILD)/$(POPPLER_TAR) ]; then \
+		wget -cq -O $@ $(POPPLER_URL) ; \
+	fi
 
 # ------------------------------------------------------------------------------
 
@@ -240,7 +253,9 @@ $(ZLIB_DIR): $(DEP_BUILD)/$(ZLIB_TAR)
 	fi
 
 $(DEP_BUILD)/$(ZLIB_TAR): $(DEP_BUILD)
-	wget -cq -O $@ $(ZLIB_URL)
+	if [ ! -f $(DEP_BUILD)/$(ZLIB_TAR) ]; then \
+		wget -cq -O $@ $(ZLIB_URL) ; \
+	fi
 
 # ------------------------------------------------------------------------------
 # expat is required for fontconfig
@@ -256,14 +271,18 @@ $(EXPAT_DIR): $(DEP_BUILD)/$(EXPAT_TAR)
 	fi
 
 $(DEP_BUILD)/$(EXPAT_TAR): $(DEP_BUILD)
-	wget -cq -O $@ $(EXPAT_URL)
+	if [ ! -f $(DEP_BUILD)/$(EXPAT_TAR) ]; then \
+		wget -cq -O $@ $(EXPAT_URL) ; \
+	fi
 
 # ------------------------------------------------------------------------------
 
 $(OJPG_LIB): $(OJPG_DIR) $(DEP_ROOT)
 	cd $(OJPG_DIR) && \
-		env $(CONFIGURE_ENV) sh -c './configure $(OJPG_CONFIGURE)'
-	make $(MAKEFLAGS) -C $(OJPG_DIR) install
+		env $(CONFIGURE_ENV) sh -c 'cmake -DCMAKE_PREFIX_PATH=$(DEP_ROOT) -DCMAKE_INSTALL_PREFIX=$(DEP_ROOT) .'
+	make $(MAKEFLAGS) -C $(OJPG_DIR)/src/lib install
+	# We're only installing the lib, so need to copy pkgconfig file manually...
+	cp $(OJPG_DIR)/libopenjp2.pc $(DEP_ROOT)/lib/pkgconfig/
 
 $(OJPG_DIR): $(DEP_BUILD)/$(OJPG_TAR)
 	if [ ! -d $(OJPG_DIR) ]; then \
@@ -271,7 +290,9 @@ $(OJPG_DIR): $(DEP_BUILD)/$(OJPG_TAR)
 	fi
 
 $(DEP_BUILD)/$(OJPG_TAR): $(DEP_BUILD)
-	wget -cq -O $@ $(OJPG_URL)
+	if [ ! -f $(DEP_BUILD)/$(OJPG_TAR) ]; then \
+		wget -cq -O $@ $(OJPG_URL) ; \
+	fi
 
 # ------------------------------------------------------------------------------
 
@@ -286,13 +307,18 @@ $(WEBP_DIR): $(DEP_BUILD)/$(WEBP_TAR)
 	fi
 
 $(DEP_BUILD)/$(WEBP_TAR): $(DEP_BUILD)
-	wget -cq -O $@ $(WEBP_URL)
+	if [ ! -f $(DEP_BUILD)/$(WEBP_TAR) ]; then \
+		wget -cq -O $@ $(WEBP_URL) ; \
+	fi
 
 # ------------------------------------------------------------------------------
 
 $(PIXMAN_LIB): $(PIXMAN_DIR) $(DEP_ROOT)
 	cd $(PIXMAN_DIR) && \
 		env $(CONFIGURE_ENV) PNG_LIBS=-lpng sh -c './configure $(PIXMAN_CONFIGURE)'
+	# These tests are broken on OSX... causes build failure
+	touch $(PIXMAN_DIR)/test/region-test
+	touch $(PIXMAN_DIR)/test/scaling-helpers-test
 	make $(MAKEFLAGS) -C $(PIXMAN_DIR) install
 
 $(PIXMAN_DIR): $(DEP_BUILD)/$(PIXMAN_TAR)
@@ -301,7 +327,9 @@ $(PIXMAN_DIR): $(DEP_BUILD)/$(PIXMAN_TAR)
 	fi
 
 $(DEP_BUILD)/$(PIXMAN_TAR): $(DEP_BUILD)
-	wget -cq -O $@ $(PIXMAN_URL)
+	if [ ! -f $(DEP_BUILD)/$(PIXMAN_TAR) ]; then \
+		wget -cq -O $@ $(PIXMAN_URL) ; \
+	fi
 
 # ------------------------------------------------------------------------------
 
@@ -316,7 +344,9 @@ $(FC_DIR): $(DEP_BUILD)/$(FC_TAR)
 	fi
 
 $(DEP_BUILD)/$(FC_TAR): $(DEP_BUILD)
-	wget -cq -O $@ $(FC_URL)
+	if [ ! -f $(DEP_BUILD)/$(FC_TAR) ]; then \
+		wget -cq -O $@ $(FC_URL) ; \
+	fi
 
 # ------------------------------------------------------------------------------
 
@@ -341,7 +371,9 @@ $(JBIG_DIR): $(DEP_BUILD)/$(JBIG_TAR)
 	fi
 
 $(DEP_BUILD)/$(JBIG_TAR): $(DEP_BUILD)
-	wget -cq -O $@ $(JBIG_URL)
+	if [ ! -f $(DEP_BUILD)/$(JBIG_TAR) ]; then \
+		wget -cq -O $@ $(JBIG_URL) ; \
+	fi
 
 # ------------------------------------------------------------------------------
 
@@ -356,13 +388,15 @@ $(CAIRO_DIR): $(DEP_BUILD)/$(CAIRO_TAR)
 	fi
 
 $(DEP_BUILD)/$(CAIRO_TAR): $(DEP_BUILD)
-	wget -cq -O $@ -c $(CAIRO_URL)
+	if [ ! -f $(DEP_BUILD)/$(CAIRO_TAR) ]; then \
+		wget -cq -O $@ -c $(CAIRO_URL) ; \
+	fi
 
 # ------------------------------------------------------------------------------
 
 $(LCMS_LIB): $(LCMS_DIR) $(DEP_ROOT)
 	cd $(LCMS_DIR) && \
-		env $(CONFIGURE_ENV) sh -c 'libtoolize && autoreconf && ./configure $(LCMS_CONFIGURE)'
+		env $(CONFIGURE_ENV) sh -c '$(LIBTOOLIZE) && autoreconf && ./configure $(LCMS_CONFIGURE)'
 	make $(MAKEFLAGS) -C $(LCMS_DIR) install
 
 $(LCMS_DIR): $(DEP_BUILD)/$(LCMS_TAR)
@@ -371,7 +405,9 @@ $(LCMS_DIR): $(DEP_BUILD)/$(LCMS_TAR)
 	fi
 
 $(DEP_BUILD)/$(LCMS_TAR): $(DEP_BUILD)
-	wget -cq -O $@ $(LCMS_URL)
+	if [ ! -f $(DEP_BUILD)/$(LCMS_TAR) ]; then \
+		wget -cq -O $@ $(LCMS_URL) ; \
+	fi
 
 # ------------------------------------------------------------------------------
 
@@ -386,7 +422,9 @@ $(PNG_DIR): $(DEP_BUILD)/$(PNG_TAR)
 	fi
 
 $(DEP_BUILD)/$(PNG_TAR): $(DEP_BUILD)
-	wget -cq -O $@ $(PNG_URL)
+	if [ ! -f $(DEP_BUILD)/$(PNG_TAR) ]; then \
+        wget -cq -O $@ $(PNG_URL) ; \
+    fi
 
 # ------------------------------------------------------------------------------
 
@@ -401,7 +439,9 @@ $(JPEG_DIR): $(DEP_BUILD)/$(JPEG_TAR)
 	fi
 
 $(DEP_BUILD)/$(JPEG_TAR): $(DEP_BUILD)
-	wget -cq -O $@ $(JPEG_URL)
+	if [ ! -f $(DEP_BUILD)/$(JPEG_TAR) ]; then \
+		wget -cq -O $@ $(JPEG_URL) ; \
+	fi
 
 # ------------------------------------------------------------------------------
 
@@ -416,4 +456,6 @@ $(TIFF_DIR): $(DEP_BUILD)/$(TIFF_TAR)
 	fi
 
 $(DEP_BUILD)/$(TIFF_TAR): $(DEP_BUILD)
-	wget -cq -O $@ $(TIFF_URL)
+	if [ ! -f $(DEP_BUILD)/$(TIFF_TAR) ]; then \
+		wget -cq -O $@ $(TIFF_URL) ; \
+	fi

@@ -20,14 +20,14 @@ show_help(Logger *log, ArgParser *args) {
     log->println(" - poppler-splash");
     log->println(" - ghostscript");
     #ifdef _WIN32
-    log->println(" - photoshop");
+    log->println(" - photoshop (COM)");
     #endif
     log->println("");
     log->println("Examples:");
     log->println("  $ pandapdf -pdf test.pdf -out dir -json-regions large,jpeg@80,1500 medium,webp@90,720");
     log->println("");
     log->println("Versions:");
-    log->println(" PandaPDF   : %s (c) 2009-2013 PixelMags Inc.", PANDAPDF_VERSION);
+    log->println(" PandaPDF   : %s (c) 2009-2015 PixelMags Inc., H Roberts", PANDAPDF_VERSION);
     log->println(" Poppler    : %s", LIB_VER_POPPLER);
     log->println(" Cairo      : %s", LIB_VER_CAIRO);
     log->println(" Freetype   : %s", LIB_VER_FREETYPE);

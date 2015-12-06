@@ -96,11 +96,8 @@ private:
     initGlobalParams() {
         if( NULL == globalParams ) {
             char yes[] = "yes";
-            char no[] = "no";
             globalParams = new GlobalParams("/usr/share/poppler/");
             globalParams->setEnableFreeType(yes);
-            globalParams->setAntialias(yes);
-            globalParams->setVectorAntialias(no);
         }
     }
 
@@ -291,6 +288,7 @@ protected:
 
         // Setup output device
         CairoOutputDev cairo_out;
+        cairo_out.setVectorAntialias(gFalse);
         cairo_out.startDoc(m_doc, NULL);
         cairo_out.setPrinting(gFalse);
 
@@ -387,13 +385,21 @@ protected:
 
         SplashColor paperColor = {0xff, 0xff, 0xff};
         SplashOutputDev splash_out(
-            splashModeRGB8,
+            splashModeRGB8, // colorModeA
             4,          // bitmapRowPad
-            gFalse,     // reverseVideo
-            paperColor, // paperColor
-            gTrue,      // bitmapTopDown
-            gTrue       // allowAntiAlias
+            gFalse,     // reverseVideoA
+            paperColor, // paperColorA
+            gTrue      // bitmapTopDownA
+
+            // New versions of poppler have these params
+            // thinLineMode
+            // overprintPreviewA
+
+            // Older versions of poppler have these params
+            //gTrue       // allowAntiAlias
         );
+        splash_out.setFontAntialias(gTrue);
+        splash_out.setVectorAntialias(gFalse);
         splash_out.startDoc(m_doc);
         displaySlice(pdfpage, &splash_out);
 

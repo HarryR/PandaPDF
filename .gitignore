@@ -20,3 +20,4 @@ lcms-*/
 libpng-*.tar.*
 libpng-*/
 tiff-*/
+libopenjp2*

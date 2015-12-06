@@ -3,9 +3,17 @@
 # http://www.gaia-gis.it/spatialite-3.0.0-BETA/mingw_how_to.html#pkg-config
 
 # Automatically detect windows builds under MSYS+MINGW
-OS=$(shell uname -o)
+# OSX doesn't have uname -o, but does have uname -s
+# MSYS detected with -o, Darwin with -s
+OS=$(shell uname -o 2>/dev/null || uname -s)
 ifeq ($(OS), Msys)
 WINBUILD=1
+endif
+
+# libtoolize on OSX is glibtoolize
+LIBTOOLIZE=libtoolize
+ifeq ($(OS), Darwin)
+LIBTOOLIZE=glibtoolize
 endif
 
 # Allow cross-compiling with `make CROSS=win32`
@@ -24,13 +32,20 @@ CXX     = g++
 EXE     =
 endif
 
-TARGETS=pandapdf$(EXE) pandapdfstatic$(EXE)
+TARGETS=pandapdf$(EXE)
+COPYLIBS=
+ifneq ($(OS), Darwin)
+TARGETS += pandapdfstatic$(EXE)
+else
+# We have to copy these libs into current dir for Darwin
+COPYLIBS=$(DEP_ROOT)/lib/libopenjp2.7.dylib
+endif
 
 all: $(TARGETS)
 
 include Makefile.deps
 
-PANDAPDF_VERSION=3.0.beta
+PANDAPDF_VERSION=3.0.1
 
 define VERSION_HEADER_FILE
 #ifndef VERSION_H_
@@ -65,8 +80,12 @@ STATIC_LIBS += $(FT_LIB)
 CFLAGS    = -Wall $(CPPFLAGS)
 CPPFLAGS  = -I$(POPPLER_DIR) -I$(POPPLER_DIR)/poppler/ $(CAIRO_CFLAGS) -I$(FT_DIR)/include -I$(DEP_ROOT)/include -I$(DEP_ROOT)/include/libpng12/
 CXXFLAGS  = $(CFLAGS) $(CPPFLAGS)
-LDLIBS    = 
+LDLIBS    = -lbz2
+
+# XXX: on Darwin we assume clang... elsewhere assume gcc
+ifneq ($(OS), Darwin)
 LDFLAGS   = -static-libgcc
+endif
 
 ifdef RELEASE
 CFLAGS += -O3 -flto -ffunction-sections -fdata-sections -static-libgcc -fuse-linker-plugin
@@ -121,6 +140,7 @@ cleanall: clean clean-dependencies
 pandapdf$(EXE): version.h $(obj_pandapdf)
 	@echo "[LNK] $@"
 	@$(CXX) $(LDFLAGS) -o $@ $(obj_pandapdf) $(STATIC_LIBS) $(LDLIBS)
+	@cp $(COPYLIBS) .
 
 pandapdfstatic$(EXE): version.h $(obj_pandapdf)
 	@echo "[LNK] $@"
