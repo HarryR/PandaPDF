@@ -291,7 +291,6 @@ ImageResizerOutput::finishPage( RenderContext *ctx, int pageno ) {
 
 ResizeToJpeg::ResizeToJpeg(const char *name, int max_x, int max_y, int quality)
 : ImageResizerOutput(name, max_x, max_y)
-, m_quality(quality)
 {
     m_writer = new JpegWriter(quality, false);
 }

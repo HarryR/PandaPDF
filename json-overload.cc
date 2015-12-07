@@ -3,6 +3,7 @@
 #include "asprintf.h"
 
 // Copyright (c) 2010-2013 PixelMags Inc. All Rights Reserved
+// Copyright (c) 2015 Harry Roberts. All Rights Reserved
 
 int
 json_print(json_printer *printer, int value) {
@@ -16,7 +17,13 @@ json_print(json_printer *printer, int value) {
 int
 json_print(json_printer *printer, off_t value) {
     char *str;
-    ::asprintf(&str, "%ld", value);
+    // 64bit safe, runtime but not compile-time safe
+    if( sizeof(off_t) == sizeof(long long) ) {
+        ::asprintf(&str, "%lld", value);
+    }
+    else {
+        ::asprintf(&str, "%ld", value);
+    }
     int ret = json_print_raw(printer, JSON_INT, str, ::strlen(str));
     ::free(str);
     return ret;

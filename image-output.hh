@@ -43,9 +43,6 @@ public:
     ResizeToJpeg(const char *name, int max_x, int max_y, int quality);
     virtual ~ResizeToJpeg();
     char *filename( RenderContext *ctx, int pageno );
-
-private:
-    int m_quality;
 };
 
 class ResizeToPng

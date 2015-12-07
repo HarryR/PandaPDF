@@ -11,7 +11,7 @@
 
 static void
 show_help(Logger *log, ArgParser *args) {
-    log->println("Usage: pandapdf <-options> [<name,type,size> ...]");
+    log->println("Usage: pandapdf <-options> [<name,type@quality,size> ...]");
     log->println("");
     log->println("Options:");
     args->help();

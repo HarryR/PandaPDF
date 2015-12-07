@@ -5,6 +5,7 @@
 
 #include <cstring>
 #include <cstdlib>
+#include <cassert>
 
 ArgParser::ArgParser(Logger *log)
 : m_ok(false), m_args(NULL), m_log(log)
@@ -27,10 +28,13 @@ ArgParser::help() {
 			m_log->println(" -%s\t: %s", arg->name, arg->help);
 		}
 		else {
-			const char *arg_type_str;
+			const char *arg_type_str = NULL;
 			if( arg->type == ARG_FLOAT ) arg_type_str = str_float;
 			else if( arg->type == ARG_STR ) arg_type_str = str_str;
 			else if( arg->type == ARG_INT ) arg_type_str = str_int;
+			else {
+				assert( false );
+			}
 			m_log->println(" -%s <%s>\t: %s", arg->name, arg_type_str, arg->help);
 		}
 		arg = arg->next;

@@ -88,8 +88,16 @@ LDFLAGS   = -static-libgcc
 endif
 
 ifdef RELEASE
-CFLAGS += -O3 -flto -ffunction-sections -fdata-sections -static-libgcc -fuse-linker-plugin
+CFLAGS += -O3 -flto
+CXXFLAGS += -O3 -flto
+ifneq ($(OS), Darwin)
 LDLIBS += -Wl,--gc-sections -Wl,--strip-all
+CFLAGS += -ffunction-sections -fdata-sections -static-libgcc -fuse-linker-plugin
+CXXFLAGS += -ffunction-sections -fdata-sections -static-libgcc -fuse-linker-plugin
+else
+CFLAGS += -Wno-unknown-pragmas
+CXXFLAGS += -Wno-unknown-pragmas
+endif
 LDFLAGS += -flto
 else
 CFLAGS += -O0 -ggdb

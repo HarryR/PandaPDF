@@ -21,3 +21,4 @@ libpng-*.tar.*
 libpng-*/
 tiff-*/
 libopenjp2*
+test/
