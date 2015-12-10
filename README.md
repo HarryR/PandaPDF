@@ -40,6 +40,7 @@ PandaPDF software provides the following features:
  * Manifest creator
  * Output to PNG, JPEG and WEBP
 
+[![Build Status](https://drone.io/github.com/HarryR/PandaPDF/status.png)](https://drone.io/github.com/HarryR/PandaPDF/latest)
 
 v3.0 Goals
 ----------

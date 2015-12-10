@@ -85,7 +85,7 @@ CONFIGURE_ENV += LIBOPENJPEG_CFLAGS=-I$(DEP_ROOT)/include/openjpeg-$(OJPG_VER)
 
 FT_DIR=$(DEP_BUILD)/freetype2
 FT_GIT=git://git.sv.gnu.org/freetype/freetype2.git
-FT_REV=0e0fdc5dc89e5079898c5da67b56f994c439fee1
+FT_REV=master
 FT_LIB=$(DEP_ROOT)/lib/libfreetype.a
 FT_CONFIGURE=--disable-dependency-tracking --disable-shared --prefix=$(DEP_ROOT)
 FT_MAKEFLAGS=
@@ -357,7 +357,6 @@ $(FT_LIB): $(FT_DIR) $(DEP_ROOT)
 
 $(FT_DIR): $(DEP_BUILD)
 	if [ ! -d $(FT_DIR) ]; then git clone $(FT_GIT) $(FT_DIR); fi
-	cd $(FT_DIR) && git checkout $(FT_REV)
 
 # ------------------------------------------------------------------------------
 

@@ -32,14 +32,10 @@ CXX     = g++
 EXE     =
 endif
 
-TARGETS=pandapdf$(EXE)
-COPYLIBS=
-ifneq ($(OS), Darwin)
-TARGETS += pandapdfstatic$(EXE)
-else
-# We have to copy these libs into current dir for Darwin
-COPYLIBS=$(DEP_ROOT)/lib/libopenjp2.7.dylib
-endif
+TARGETS=bin/pandapdf$(EXE)
+COPYLIBS=$(DEP_ROOT)/lib/libopenjp2*
+RELRELEASEDIR=PandaPDF-v$(PANDAPDF_VERSION)
+RELEASEDIR=../$(RELRELEASEDIR)
 
 all: $(TARGETS)
 
@@ -114,26 +110,31 @@ ifdef WINBUILD
 obj_pandapdf += disphelper.o asprintf.o photoshop-backend.o
 LDLIBS	+= -lgdi32 -lole32 -loleaut32 -luuid
 else
-# expat is required when fontconfig is used
+# expat is required when fontconfig is used on non-windows
 LDLIBS  += -lexpat -lpthread
 endif
 
 # ------------------------------------------------------------------------------
 
-ifdef RELEASE
-release: clean $(TARGETS)
-	strip -R .note -R .comment $(TARGETS)
-	upx -9 $(TARGETS)
-	rm -rf ../v$(PANDAPDF_VERSION)/
-	mkdir ../v$(PANDAPDF_VERSION)/
-	cp $(TARGETS) ../v$(PANDAPDF_VERSION)/
-	cd ../ && tar --create --file=v$(PANDAPDF_VERSION).tar.gz -z v$(PANDAPDF_VERSION)
-endif
+$(RELEASEDIR):
+	rm -rf $(RELEASEDIR)
+	mkdir $(RELEASEDIR)
+	# Then copy files into it
+	strip $(TARGETS)
+	upx -q9 $(TARGETS)
+	@rm -f bin/libopenjp2.dylib bin/libopenjp2.*.*.*.dylib
+	cp COPYING bin/* $(RELEASEDIR)
+.PHONY: $(RELEASEDIR)
+
+$(RELEASEDIR).tar.gz: $(RELEASEDIR)
+	tar -C ../ -czf $@ $(RELRELEASEDIR)
+	rm PandaPDF-release.tar.gz
+	ln -s PandaPDF-release.tar.gz $@
+
+release: $(TARGETS) $(RELEASEDIR).tar.gz
 
 clean:
-	-rm -f $(obj_pandapdf)
-	-rm -f $(TARGETS)
-	-rm -f version.h
+	-rm -f bin/ $(obj_pandapdf) version.h
 
 cleanall: clean clean-dependencies
 
@@ -145,12 +146,14 @@ cleanall: clean clean-dependencies
 	@echo "[CC] $<"
 	@$(CC) $(CFLAGS) -o $@ -c $<
 
-pandapdf$(EXE): version.h $(obj_pandapdf)
+bin/pandapdf$(EXE): version.h $(obj_pandapdf)
+	@mkdir -p bin/
 	@echo "[LNK] $@"
 	@$(CXX) $(LDFLAGS) -o $@ $(obj_pandapdf) $(STATIC_LIBS) $(LDLIBS)
-	@cp $(COPYLIBS) .
+	@cp $(COPYLIBS) bin	
 
-pandapdfstatic$(EXE): version.h $(obj_pandapdf)
+bin/pandapdfstatic$(EXE): version.h $(obj_pandapdf)
+	@mkdir -p bin/
 	@echo "[LNK] $@"
 	@$(CXX) $(LDFLAGS) -static -o $@ $(obj_pandapdf) $(STATIC_LIBS) $(LDLIBS)
 
